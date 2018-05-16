@@ -18,13 +18,13 @@ function create_link () {
 
 create_link .bash_profile ~
 create_link .bashrc ~
-create_link .bashrcImg ~
-create_link .bashrcAliases ~
+create_link .bashImg ~
+create_link .bashAliases ~
 create_link .bashOsCheck ~
 
 # OsCheckの結果がLinuxであれば実行する
 if [ `. ~/.bashOsCheck` == 'Linux' ]; then
-	create_link .bashrcLinux ~
+	create_link .bashLinux ~
 fi
 
 source ~/.bashrc
