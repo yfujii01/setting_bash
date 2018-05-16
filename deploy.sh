@@ -20,8 +20,10 @@ create_link .bash_profile ~
 create_link .bashrc ~
 create_link .bashrcImg ~
 create_link .bashrcAliases ~
+create_link .bashOsCheck ~
 
-if [ ! $OS == 'Windows_NT' ]; then
+# OsCheckの結果がLinuxであれば実行する
+if [ `. ~/.bashOsCheck` == 'Linux' ]; then
 	create_link .bashrcLinux ~
 fi
 
