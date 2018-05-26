@@ -25,17 +25,17 @@ if [ -f ~/.bashrcLinux ]; then
 	. ~/.bashrcLinux
 fi
 
-# pyenvがインストールされていればパスに追加する
-if [ -e ~/.pyenv ]; then
-	export PATH="~/.pyenv/bin:$PATH"
-	eval "$(pyenv init -)"
-	eval "$(pyenv virtualenv-init -)"
-else
-	echo "this system is not install pyenv!"
-	echo "please install pyenv"
-	echo "install command is this↓"
-	echo "============================================================"
-	echo "curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash"
-	echo "============================================================"
-fi
+# # pyenvがインストールされていればパスに追加する
+# if [ -e ~/.pyenv ]; then
+# 	export PATH="~/.pyenv/bin:$PATH"
+# 	eval "$(pyenv init -)"
+# 	eval "$(pyenv virtualenv-init -)"
+# else
+# 	echo "this system is not install pyenv!"
+# 	echo "please install pyenv"
+# 	echo "install command is this↓"
+# 	echo "============================================================"
+# 	echo "curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash"
+# 	echo "============================================================"
+# fi
 
