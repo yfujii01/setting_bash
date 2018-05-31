@@ -21,10 +21,7 @@ create_link .bashrc ~
 create_link .bashImg ~
 create_link .bashAliases ~
 create_link .bashOsCheck ~
-
-# OsCheckの結果がLinuxであれば実行する
-if [ `. ~/.bashOsCheck` == 'Linux' ]; then
-	create_link .bashLinux ~
-fi
+create_link .bashLinux ~
+create_link .bashWindows ~
 
 source ~/.bashrc

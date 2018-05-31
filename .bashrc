@@ -20,24 +20,19 @@ else
 	echo '~/.bachrcAliasesが見つかりません'
 fi
 
-# Linuxでのみ必要なスクリプト(windowsで流しても影響は無い)
-if [ -f ~/.bashrcLinux ]; then
-	. ~/.bashrcLinux
+# Linuxでのみ必要なスクリプト
+if [ `. ~/.bashOsCheck` == 'Linux' ]; then
+	if [ -f ~/.bashLinux ]; then
+		. ~/.bashLinux
+	fi
 fi
 
-# # pyenvがインストールされていればパスに追加する
-# if [ -e ~/.pyenv ]; then
-# 	export PATH="~/.pyenv/bin:$PATH"
-# 	eval "$(pyenv init -)"
-# 	eval "$(pyenv virtualenv-init -)"
-# else
-# 	echo "this system is not install pyenv!"
-# 	echo "please install pyenv"
-# 	echo "install command is this↓"
-# 	echo "============================================================"
-# 	echo "curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash"
-# 	echo "============================================================"
-# fi
+# Windowsでのみ必要なスクリプト
+if [ `. ~/.bashOsCheck` == 'Win' ]; then
+	if [ -f ~/.bashWindows ]; then
+		. ~/.bashWindows
+	fi
+fi
 
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
