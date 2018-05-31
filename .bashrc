@@ -2,22 +2,22 @@
 [ -z "$PS1" ] && return
 
 # 起動時imageの読み込み
-if [ -f ~/.bashrcImg ]; then
+if [ -f ~/.bashImg ]; then
 	COMMENT=【`date "+%Y-%m-%d (%a)"`】
 	IFS=">"
-	AA=(`sed -e "s/__DATE__/$COMMENT/g" ~/.bashrcImg`)
+	AA=(`sed -e "s/__DATE__/$COMMENT/g" ~/.bashImg`)
 	NUM=${#AA[*]}
 	NO=`expr $RANDOM % $NUM`
 	echo ${AA[$NO]}
 else
-	echo '~/.bachrcImgが見つかりません'
+	echo '~/.bachImgが見つかりません'
 fi
 
 # エイリアスの設定
-if [ -f ~/.bashrcAliases ]; then
-	. ~/.bashrcAliases
+if [ -f ~/.bashAliases ]; then
+	. ~/.bashAliases
 else
-	echo '~/.bachrcAliasesが見つかりません'
+	echo '~/.bachAliasesが見つかりません'
 fi
 
 # Linuxでのみ必要なスクリプト
