@@ -41,6 +41,3 @@ if [ `. ~/.bashOsCheck` == 'Win' ]; then
 	fi
 fi
 
-export PATH="$HOME/.anyenv/bin:$PATH"
-eval "$(anyenv init -)"
-
