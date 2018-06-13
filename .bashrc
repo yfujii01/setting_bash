@@ -27,6 +27,13 @@ if [ `. ~/.bashOsCheck` == 'Linux' ]; then
 	fi
 fi
 
+# Macでのみ必要なスクリプト
+if [ `. ~/.bashOsCheck` == 'Mac' ]; then
+	if [ -f ~/.bashLinux ]; then
+		. ~/.bashLinux
+	fi
+fi
+
 # Windowsでのみ必要なスクリプト
 if [ `. ~/.bashOsCheck` == 'Win' ]; then
 	if [ -f ~/.bashWindows ]; then
