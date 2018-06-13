@@ -33,3 +33,6 @@ alias gba='for remote in `git branch -r`; do if [ $remote != "origin/HEAD" ] && 
 
 # クリップボードへコピー(動かない)
 alias pbcopy='xsel --clipboard --input'
+
+alias dockerps="docker ps -a | awk '{print \$1}' | tail -n +2"
+alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
