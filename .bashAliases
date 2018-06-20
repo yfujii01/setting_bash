@@ -41,3 +41,18 @@ alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerima
 
 alias sshgce="ssh fancl01@gce"
 
+# localのgitリポジトリに移動
+alias gcd='cd $(ghq root)/$(ghq list | peco)'
+
+# githubのリポジトリに移動
+alias ghcd='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+
+# githubのリポジトリ一覧
+alias ghls=curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'"' -f4
+
+# githubのリポジトリ一覧
+alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
+
+# githubのリポジトリをcloneする
+alias ghget='ghls|peco|xargs ghq get'
+
