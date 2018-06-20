@@ -78,4 +78,4 @@ fi
 stty stop undef
 
 
-alias idea='/snap/bin/intellij-idea-ultimate'
+#alias idea='/snap/bin/intellij-idea-ultimate'

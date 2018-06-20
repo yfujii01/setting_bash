@@ -36,3 +36,8 @@ alias pbcopy='xsel --clipboard --input'
 
 alias dockerps="docker ps -a | awk '{print \$1}' | tail -n +2"
 alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
+alias dockerrm="dockerps|xargs docker stop&&dockerps|xargs docker rm"
+alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerimages|xargs docker rmi"
+
+alias sshgce="ssh fancl01@gce"
+

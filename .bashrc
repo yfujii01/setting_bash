@@ -32,6 +32,10 @@ if [ `. ~/.bashOsCheck` == 'Mac' ]; then
 	if [ -f ~/.bashLinux ]; then
 		. ~/.bashLinux
 	fi
+
+	echo 'this is mac'
+	#alias jenv_set_java_home='export JAVA_HOME="$HOME/.jenv/versions/`jenv version-name`"'
+	alias jenv_java_home='echo "$HOME/.jenv/versions/`jenv version-name`"'
 fi
 
 # Windowsでのみ必要なスクリプト
