@@ -3,11 +3,11 @@
 
 # 起動時imageの読み込み
 if [ -f ~/.bashImg ]; then
-	COMMENT=【`date "+%Y-%m-%d (%a)"`】
+	COMMENT=【$(date "+%Y-%m-%d (%a)")】
 	IFS=">"
-	AA=(`sed -e "s/__DATE__/$COMMENT/g" ~/.bashImg`)
+	AA=($(sed -e "s/__DATE__/$COMMENT/g" ~/.bashImg))
 	NUM=${#AA[*]}
-	NO=`expr $RANDOM % $NUM`
+	NO=$(expr $RANDOM % $NUM)
 	echo ${AA[$NO]}
 else
 	echo '~/.bachImgが見つかりません'
@@ -21,14 +21,14 @@ else
 fi
 
 # Linuxでのみ必要なスクリプト
-if [ `. ~/.bashOsCheck` == 'Linux' ]; then
+if [ $(. ~/.bashOsCheck) == 'Linux' ]; then
 	if [ -f ~/.bashLinux ]; then
 		. ~/.bashLinux
 	fi
 fi
 
 # Macでのみ必要なスクリプト
-if [ `. ~/.bashOsCheck` == 'Mac' ]; then
+if [ $(. ~/.bashOsCheck) == 'Mac' ]; then
 	if [ -f ~/.bashLinux ]; then
 		. ~/.bashLinux
 	fi
@@ -38,9 +38,12 @@ if [ `. ~/.bashOsCheck` == 'Mac' ]; then
 fi
 
 # Windowsでのみ必要なスクリプト
-if [ `. ~/.bashOsCheck` == 'Win' ]; then
+if [ $(. ~/.bashOsCheck) == 'Win' ]; then
 	if [ -f ~/.bashWindows ]; then
 		. ~/.bashWindows
 	fi
-fi
 
+	# GOPATH追加
+	export GOPATH="$HOME/go"
+	export PATH="$GOPATH/bin:$PATH"
+fi
