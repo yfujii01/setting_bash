@@ -47,12 +47,14 @@ alias ee='exec $SHELL -l'
 alias gcd='cd $(ghq root)/$(ghq list | peco)'
 
 # githubのリポジトリに移動
-#alias ghcd='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias ghcd1='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 #alias ghcd='ghq list | peco | cut -d "/" -f 2,3 | xargs hub browse'
-alias ghcd='ghls | peco | cut -d "/" -f 2,3 | xargs hub browse'
+#alias ghcd='ghls | peco | cut -d "/" -f 2,3 | xargs hub browse'
+alias ghcd='ghls2 | peco | cut -d "/" -f 2,3 | xargs hub browse'
 
 # githubのリポジトリ一覧
 alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
+alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
 
 # githubのリポジトリをcloneする
 alias ghget='ghls|peco --select-1|xargs ghq get'
