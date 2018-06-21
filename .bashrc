@@ -14,7 +14,7 @@ else
 fi
 
 # エイリアスの設定
-if [ -f ~/.bashAliases ]; then
+		if [ -f ~/.bashAliases ]; then
 	. ~/.bashAliases
 else
 	echo '~/.bachAliasesが見つかりません'
