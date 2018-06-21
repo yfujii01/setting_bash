@@ -11,7 +11,8 @@ else
 fi
 unset color_prompt force_color_prompt
 
-HISTCONTROL=ignoreboth
+# historyの重複は最新1件だけにする
+export HISTCONTROL=ignoreboth
 shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
@@ -62,17 +63,23 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
 # git-bash style
 if [ -f /etc/bash_completion ]; then
    . /etc/bash_completion
+elif [ -f $(brew --prefix)/etc/bash_completion ]; then
+   . $(brew --prefix)/etc/bash_completion
 fi
 if [ -f /etc/bash_completion.d/git-prompt ]; then
+   export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w$(__git_ps1) \n\[\033[01;34m\]\$\[\033[00m\] '
+elif [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
+   export LANG=C
+   source /usr/local/etc/bash_completion.d/git-prompt.sh
+   source /usr/local/etc/bash_completion.d/git-completion.bash
+   GIT_PS1_SHOWDIRTYSTATE=true
    export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w$(__git_ps1) \n\[\033[01;34m\]\$\[\033[00m\] '
 else
    export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w \n\[\033[01;34m\]\$\[\033[00m\] '
 fi
-
 # Ctrl+s 押下時に描画ロックしない
 # デフォルト設定の場合はCtrl+qで描画再開する
 stty stop undef

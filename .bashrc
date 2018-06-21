@@ -14,7 +14,7 @@ else
 fi
 
 # エイリアスの設定
-		if [ -f ~/.bashAliases ]; then
+if [ -f ~/.bashAliases ]; then
 	. ~/.bashAliases
 else
 	echo '~/.bachAliasesが見つかりません'
@@ -43,7 +43,8 @@ if [ $(. ~/.bashOsCheck) == 'Win' ]; then
 		. ~/.bashWindows
 	fi
 
-	# GOPATH追加
-	export GOPATH="$HOME/go"
-	export PATH="$GOPATH/bin:$PATH"
 fi
+
+# GOPATH追加
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
