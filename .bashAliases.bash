@@ -85,11 +85,11 @@ peco-history() {
 _replace_by_history() {
 	local l=$(HISTTIMEFORMAT= history | tac | sed -e 's/^\s*[0-9]\+\s\+//' | peco --query "$READLINE_LINE")
 
-    # bind -x で呼び出した場合にはコマンドラインに表示できる
+	# bind -x で呼び出した場合にはコマンドラインに表示できる
 	READLINE_LINE="$l"
 	READLINE_POINT=${#l}
 
-    #キーをコマンドラインに表示(macでしか動かない)
+	#キーをコマンドラインに表示(macでしか動かない)
 	history -s $l
 	if type osascript >/dev/null 2>&1; then
 		(osascript -e 'tell application "System Events" to keystroke (ASCII character 30)' &)
@@ -112,3 +112,24 @@ function peco_ssh() {
 }
 
 alias s='$(peco_ssh | peco)| xargs ssh'
+
+# git branchの一覧(ブランチ名のみ)
+function git_branch_list() {
+	git branch | awk '{
+        if (gsub(/^.+ /,""))  print
+    }'
+}
+
+# git branchをインタラクティブに選択
+function git_checkout_peco() {
+	local val=$(git_branch_list | peco)
+	if [ -z $val ]; then
+		# 戻り値無し(ESCで抜けた)
+		echo 'exit'
+		return
+	fi
+	echo $val'をcheckoutします'
+	git checkout $val
+}
+
+alias gcheck='git checkout $(git branch|peco)'
