@@ -24,8 +24,25 @@ alias gl='git log --oneline --graph --decorate --all --date-order' # --simplify-
 alias gconf='git config -l'
 #gitコンボ
 alias gsd='echo "------ git status ------";gs;echo "------ git diff --name-only ------";gd'
-alias gac='git add .;git commit'
-alias gacp='git add .;git commit;git push origin HEAD'
+# alias gac='git add .;git commit'
+# alias gacp='git add .;git commit;git push origin HEAD'
+
+# git addしてcommitする。パラメータがあればコミットメッセージとして扱う
+function gac(){
+    git add .
+    local mes=$1
+    if [ -z $mes ]; then
+        git commit
+    else
+        git commit -m $mes
+    fi
+}
+
+# git addしてcommitしてpushする。パラメータがあればコミットメッセージとして扱う
+function gacp(){
+    gac $1
+    git push origin HEAD
+}
 
 # 全てのリモートブランチをローカルに作成する
 alias gba='for remote in `git branch -r`; do if [ $remote != "origin/HEAD" ] && [ $remote != "->" ]; then git branch --track ${remote#origin/} $remote; fi done'
