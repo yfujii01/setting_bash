@@ -55,6 +55,11 @@ alias ghcd='ghls2 | peco | cut -d "/" -f 2,3 | xargs hub browse'
 alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
 alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
 
+function ghls3(){
+    local xx = $(curl -s "https://api.github.com/users/yfujii01/repos?per_page=100")
+    echo $xx
+}
+
 # githubのリポジトリをcloneする
 alias ghget='ghls|peco --select-1|xargs ghq get'
 
@@ -99,7 +104,7 @@ _replace_by_history() {
 
 alias h='_replace_by_history'
 
-function peco_ssh() {
+function sshlist() {
 	awk '
     tolower($1)=="host" {
       for(i=2;i<=NF; i++) {
@@ -111,7 +116,11 @@ function peco_ssh() {
   ' ~/.ssh/config
 }
 
-alias s='$(peco_ssh | peco)| xargs ssh'
+function peco_ssh2() {
+	val=$(sshlist|peco)
+    [ -z $val ] && return
+	ssh $val
+}
 
 # git branchの一覧(ブランチ名のみ)
 function git_branch_list() {

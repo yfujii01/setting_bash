@@ -24,4 +24,4 @@ create_link .bashOsCheck ~
 create_link .bashLinux ~
 create_link .bashWindows ~
 
-source ~/.bashrc
+exec $SHELL -l

@@ -20,15 +20,18 @@ else
 	echo '~/.bachAliasesが見つかりません'
 fi
 
+myosname=$(. ~/.bashOsCheck)
+
 # Linuxでのみ必要なスクリプト
-if [ $(. ~/.bashOsCheck) == 'Linux' ]; then
+if [ $myosname == 'Linux' ]; then
+	echo 'I am linux machine!'
 	if [ -f ~/.bashLinux ]; then
 		. ~/.bashLinux
 	fi
 fi
 
 # Macでのみ必要なスクリプト
-if [ $(. ~/.bashOsCheck) == 'Mac' ]; then
+if [ $myosname == 'Mac' ]; then
 	if [ -f ~/.bashLinux ]; then
 		. ~/.bashLinux
 	fi
@@ -38,7 +41,7 @@ if [ $(. ~/.bashOsCheck) == 'Mac' ]; then
 fi
 
 # Windowsでのみ必要なスクリプト
-if [ $(. ~/.bashOsCheck) == 'Win' ]; then
+if [ $myosname == 'Win' ]; then
 	if [ -f ~/.bashWindows ]; then
 		. ~/.bashWindows
 	fi
