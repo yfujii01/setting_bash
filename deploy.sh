@@ -19,7 +19,7 @@ function create_link () {
 create_link .bash_profile ~
 create_link .bashrc ~
 create_link .bashImg ~
-create_link .bashAliases ~
+create_link .bashAliases.bash ~
 create_link .bashOsCheck ~
 create_link .bashLinux ~
 create_link .bashWindows ~

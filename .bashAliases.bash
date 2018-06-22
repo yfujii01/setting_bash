@@ -19,7 +19,7 @@ alias gd='git diff --name-only '
 alias gdw='git difftool -y -d -t default-difftool'
 alias gdm='git difftool -t meld -d'
 alias gdv='git difftool -t vimdiff'
-alias gk='gitk --all --date-order' # --simplify-by-decoration をつけると個別のコミットが隠れる
+alias gk='gitk --all --date-order'                                 # --simplify-by-decoration をつけると個別のコミットが隠れる
 alias gl='git log --oneline --graph --decorate --all --date-order' # --simplify-by-decoration をつけると個別のコミットが隠れる
 alias gconf='git config -l'
 #gitコンボ
@@ -29,7 +29,6 @@ alias gacp='git add .;git commit;git push origin HEAD'
 
 # 全てのリモートブランチをローカルに作成する
 alias gba='for remote in `git branch -r`; do if [ $remote != "origin/HEAD" ] && [ $remote != "->" ]; then git branch --track ${remote#origin/} $remote; fi done'
-
 
 # クリップボードへコピー(動かない)
 alias pbcopy='xsel --clipboard --input'
@@ -62,25 +61,54 @@ alias ghget='ghls|peco --select-1|xargs ghq get'
 # historyをpecoで
 export HISTCONTROL="ignoredups"
 peco-history() {
-    local NUM=$(history | wc -l)
-    local FIRST=$((-1*(NUM-1)))
+	local NUM=$(history | wc -l)
+	local FIRST=$((-1 * (NUM - 1)))
 
-    if [ $FIRST -eq 0 ] ; then
-        history -d $((HISTCMD-1))
-        echo "No history" >&2
-        return
-    fi  
+	if [ $FIRST -eq 0 ]; then
+		history -d $((HISTCMD - 1))
+		echo "No history" >&2
+		return
+	fi
 
-    local CMD=$(fc -l $FIRST | sort -k 2 -k 1nr | uniq -f 1 | sort -nr | sed -E 's/^[0-9]+[[:blank:]]+//' | peco | head -n 1)
+	local CMD=$(fc -l $FIRST | sort -k 2 -k 1nr | uniq -f 1 | sort -nr | sed -E 's/^[0-9]+[[:blank:]]+//' | peco | head -n 1)
 
-    if [ -n "$CMD" ] ; then
-        history -s $CMD
+	if [ -n "$CMD" ]; then
+		#キーをコマンドラインに表示(macでしか動かない)
+		history -s $CMD
+		if type osascript >/dev/null 2>&1; then
+			(osascript -e 'tell application "System Events" to keystroke (ASCII character 30)' &)
+		fi
+	else
+		history -d $((HISTCMD - 1))
+	fi
+}
+_replace_by_history() {
+	local l=$(HISTTIMEFORMAT= history | tac | sed -e 's/^\s*[0-9]\+\s\+//' | peco --query "$READLINE_LINE")
 
-        if type osascript > /dev/null 2>&1 ; then
-            (osascript -e 'tell application "System Events" to keystroke (ASCII character 30)' &)
-        fi  
-    else
-        history -d $((HISTCMD-1))
-    fi  
+    # bind -x で呼び出した場合にはコマンドラインに表示できる
+	READLINE_LINE="$l"
+	READLINE_POINT=${#l}
+
+    #キーをコマンドラインに表示(macでしか動かない)
+	history -s $l
+	if type osascript >/dev/null 2>&1; then
+		(osascript -e 'tell application "System Events" to keystroke (ASCII character 30)' &)
+	fi
+}
+# bind -x '"\C-r": _replace_by_history'
+
+alias h='_replace_by_history'
+
+function peco_ssh() {
+	awk '
+    tolower($1)=="host" {
+      for(i=2;i<=NF; i++) {
+        if ($i !~ "[*?]") {
+          print $i
+        }
+      }
+    }
+  ' ~/.ssh/config
 }
 
+alias s='$(peco_ssh | peco)| xargs ssh'
