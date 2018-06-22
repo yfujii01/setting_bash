@@ -121,7 +121,7 @@ function git_branch_list() {
 }
 
 # git branchをインタラクティブに選択
-function git_checkout_peco() {
+function __git_checkout_peco() {
 	local val=$(git_branch_list | peco)
 	if [ -z $val ]; then
 		# 戻り値無し(ESCで抜けた)
@@ -130,6 +130,21 @@ function git_checkout_peco() {
 	fi
 	echo $val'をcheckoutします'
 	git checkout $val
+}
+function git_checkout_peco() {
+	local val1=$(git branch | peco)
+	local val2=$(echo $val1 | awk '{if(gsub(/^.+ /,""))print}')
+
+    # 画面表示をクリア(たまにpecoの残像が残る)
+	clear
+
+	if [ -z $val2 ]; then
+		# 戻り値無し(ESCで抜けた)
+		echo 'exit'
+		return
+	fi
+	echo $val2'をcheckoutします'
+	git checkout $val2
 }
 
 alias gcheck='git checkout $(git branch|peco)'
