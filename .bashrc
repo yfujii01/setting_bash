@@ -25,15 +25,15 @@ myosname=$(. ~/.bashOsCheck)
 # Linuxでのみ必要なスクリプト
 if [ $myosname == 'Linux' ]; then
 	echo 'I am linux machine!'
-	if [ -f ~/.bashLinux ]; then
-		. ~/.bashLinux
+	if [ -f ~/.bashLinux.bash ]; then
+		. ~/.bashLinux.bash
 	fi
 fi
 
 # Macでのみ必要なスクリプト
 if [ $myosname == 'Mac' ]; then
-	if [ -f ~/.bashLinux ]; then
-		. ~/.bashLinux
+	if [ -f ~/.bashMac.bash ]; then
+		. ~/.bashMac.bash
 	fi
 
 	echo 'this is mac'
@@ -42,12 +42,18 @@ fi
 
 # Windowsでのみ必要なスクリプト
 if [ $myosname == 'Win' ]; then
-	if [ -f ~/.bashWindows ]; then
-		. ~/.bashWindows
+	if [ -f ~/.bashWindows.bash ]; then
+		. ~/.bashWindows.bash
 	fi
 
 fi
 
 # GOPATH追加
-export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
+if [ -e ~/go ]; then
+	export GOPATH="~/go"
+	export PATH="$PATH:$GOPATH/bin"
+fi
+
+# fzfパス追加
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+

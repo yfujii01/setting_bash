@@ -72,8 +72,8 @@ alias ghcd1='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias ghcd='ghls2 | peco | cut -d "/" -f 2,3 | xargs hub browse'
 
 # githubのリポジトリ一覧
-alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
-alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
+#alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
+#alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
 
 # 対話モード
 alias FILTER_M='fzf --cycle --height 80% --reverse --border --inline-info -m'
@@ -112,10 +112,12 @@ function fnc_gadd() {
 }
 
 # .bashrc展開
-dd() {
+rr() {
+	echo 'aaaa'
 	local now=$(pwd)
 	echo $now
-	cd $(ghq root)/github.com/yfujii01/setting_bash && bash deploy.sh
+	cd $(ghq root)/github.com/yfujii01/setting_bash
+	. deploy.sh
 	cd $now
 	exec $SHELL -l
 }
