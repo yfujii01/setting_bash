@@ -28,20 +28,20 @@ alias gsd='echo "------ git status ------";gs;echo "------ git diff --name-only 
 # alias gacp='git add .;git commit;git push origin HEAD'
 
 # git addしてcommitする。パラメータがあればコミットメッセージとして扱う
-function gac(){
-    git add .
-    local mes=$1
-    if [ -z $mes ]; then
-        git commit
-    else
-        git commit -m $mes
-    fi
+function gac() {
+	git add .
+	local mes=$1
+	if [ -z $mes ]; then
+		git commit
+	else
+		git commit -m $mes
+	fi
 }
 
 # git addしてcommitしてpushする。パラメータがあればコミットメッセージとして扱う
-function gacp(){
-    gac $1
-    git push origin HEAD
+function gacp() {
+	gac $1
+	git push origin HEAD
 }
 
 # 全てのリモートブランチをローカルに作成する
@@ -55,12 +55,15 @@ alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
 alias dockerrm="dockerps|xargs docker stop&&dockerps|xargs docker rm"
 alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerimages|xargs docker rmi"
 
-alias sshgce="ssh fancl01@gce"
-
 alias ee='exec $SHELL -l'
 
 # localのgitリポジトリに移動
-alias gcd='cd $(ghq root)/$(ghq list | peco)'
+alias gcd='fnc_gcd'
+function fnc_gcd() {
+	local val=$(ghq list | FILTER_S)
+	[ -z $val ] && return
+	cd $(ghq root)/$val
+}
 
 # githubのリポジトリに移動
 alias ghcd1='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
@@ -72,15 +75,61 @@ alias ghcd='ghls2 | peco | cut -d "/" -f 2,3 | xargs hub browse'
 alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
 alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
 
-function ghls3(){
-    local xx = $(curl -s "https://api.github.com/users/yfujii01/repos?per_page=100")
-    echo $xx
+# 対話モード
+alias FILTER_M='fzf --cycle --height 80% --reverse --border --inline-info -m'
+alias FILTER_S='fzf --cycle --height 80% --reverse --border --inline-info'
+alias FILTER_M_REVERSE='FILTER_M --tac'
+alias FILTER_S_REVERSE='FILTER_S --tac'
+
+# githubから対話形式でcloneする
+alias ghget='fnc_ghget'
+function fnc_ghget() {
+	echo 'githubからcloneします。複数選択可能(TAB)'
+	local aa=$(curl -s "https://api.github.com/users/yfujii01/repos?per_page=100")
+	local bb=$(echo $aa | grep \"name\")
+	local cc=$(echo $bb | cut -d'"' -f4)
+	local val=$(echo $cc | FILTER_M)
+	[ -z $val ] && return
+	echo $val | while read line; do
+		ghq get -p $line
+	done
 }
 
-# githubのリポジトリをcloneする
-alias ghget='ghls|peco --select-1|xargs ghq get'
+# 対話形式でgit addする
+alias gadd='fnc_gadd'
+function fnc_gadd() {
+	echo 'git addします。複数選択可能(TAB)'
+	local aa=$(git status -s)
+	local bb=$(echo $aa | FILTER_M)
+	[ -z $bb ] && return
+	local cc=$(echo $bb | sed s/^...//g)
+	echo $cc | while read line; do
+		# echo $line
+		git add $line
+	done
+	echo 'git addしました \^o^/'
+	git status -s
+}
 
-# historyをpecoで
+# .bashrc展開
+dd() {
+	local now=$(pwd)
+	echo $now
+	cd $(ghq root)/github.com/yfujii01/setting_bash && bash deploy.sh
+	cd $now
+	exec $SHELL -l
+}
+
+# historyを対話形式で
+his() {
+	echo '選択したコマンドを実行します。キャンセルはesc'
+	local aaa=$(history | FILTER_S_REVERSE)
+	[ -z $aaa ] && return
+	local bbb=$(echo $aaa | sed -E 's/^ +[0-9]+ +//')
+	echo $bbb'を実行します'
+	eval $bbb
+}
+
 export HISTCONTROL="ignoredups"
 peco-history() {
 	local NUM=$(history | wc -l)
@@ -133,9 +182,10 @@ function sshlist() {
   ' ~/.ssh/config
 }
 
-function peco_ssh2() {
-	val=$(sshlist|peco)
-    [ -z $val ] && return
+# .ssh/configの内容から選択してsshする
+function sshfilter() {
+	val=$(sshlist | FILTER_S)
+	[ -z $val ] && return
 	ssh $val
 }
 
@@ -161,7 +211,7 @@ function git_checkout_peco() {
 	local val1=$(git branch | peco)
 	local val2=$(echo $val1 | awk '{if(gsub(/^.+ /,""))print}')
 
-    # 画面表示をクリア(たまにpecoの残像が残る)
+	# 画面表示をクリア(たまにpecoの残像が残る)
 	clear
 
 	if [ -z $val2 ]; then

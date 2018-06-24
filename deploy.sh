@@ -24,4 +24,4 @@ create_link .bashOsCheck ~
 create_link .bashLinux ~
 create_link .bashWindows ~
 
-exec $SHELL -l
+# exec $SHELL -l

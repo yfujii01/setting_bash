@@ -75,6 +75,7 @@ elif [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
    export LANG=C
    source /usr/local/etc/bash_completion.d/git-prompt.sh
    source /usr/local/etc/bash_completion.d/git-completion.bash
+   export LANG=ja_JP.UTF-8
    GIT_PS1_SHOWDIRTYSTATE=true
    export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w$(__git_ps1) \n\[\033[01;34m\]\$\[\033[00m\] '
 else
