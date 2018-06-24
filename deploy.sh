@@ -16,23 +16,9 @@ function create_link () {
 	echo 'link create '${dir}'/'${file}
 }
 
-#create_link .bash_profile ~
-#create_link .bashrc ~
-#create_link .bashImg ~
-#create_link .bashAliases.bash ~
-#create_link .bashOsCheck ~
-#create_link .bashLinux ~
-#create_link .bashWindows ~
-
 bash_deploy(){
-	local aa=$(ls -a1)
-	#echo 'aa='$aa
-	local bb=$(echo $aa|grep .bash)
-	#echo 'bb='$bb
-#	local fs=$(ls -a -1|grep .bash)
-#	echo $fs
 	echo '今からデプロイします'
-	echo $bb | while read line; do
+	ls -a1 | grep bash | while read line; do
 		echo $line'をコピーするよ'
 		create_link $line ~
 	done
@@ -40,3 +26,5 @@ bash_deploy(){
 }
 
 bash_deploy
+. ~/.bash_profile
+
