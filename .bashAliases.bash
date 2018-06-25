@@ -1,3 +1,7 @@
+#!/bin/bash
+
+echo '.bashAlias start!!'
+
 alias ll='ls -alF'
 alias la='ls -alF'
 alias l='ls -alF'
@@ -32,7 +36,8 @@ function gc() {
 }
 # git addしてcommitする。パラメータがあればコミットメッセージとして扱う
 function gac() {
-	gadd
+	# gadd
+	fnc_gadd
 	gc $1
 }
 
@@ -63,16 +68,20 @@ function fnc_gcd() {
 	cd $(ghq root)/$val
 }
 
+echo 'fzf setting!'
 # 対話モード
 if [ $myosname = 'Win' ]; then
- 	# windows版では--heightがサポートされていない。。。
+	# windows版では--heightがサポートされていない。。。
+	echo 'fzf setting win'
 	alias FILTER_S='fzf --cycle --reverse --border --inline-info'
 else
+	echo 'fzf setting nowin'
 	alias FILTER_S='fzf --cycle --reverse --border --inline-info --height 80%'
 fi
 alias FILTER_M='FILTER_S -m'
 alias FILTER_S_REVERSE='FILTER_S --tac'
 alias FILTER_M_REVERSE='FILTER_M --tac'
+echo 'fzf setting!!'
 
 # githubから対話形式でcloneする
 alias ghget='fnc_ghget'
@@ -110,7 +119,7 @@ rr() {
 	local now=$(pwd)
 	cd $(ghq root)/github.com/yfujii01/setting_bash
 	. deploy.sh
-	# exec $SHELL -l
+	exec $SHELL -l
 }
 
 # historyを対話形式で

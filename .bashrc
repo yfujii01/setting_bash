@@ -1,5 +1,6 @@
 # 対話型ではない接続の場合はこれ以降を読み込まない
 [ -z "$PS1" ] && return
+echo 'work start!!'
 
 # 起動時imageの読み込み
 if [ -f ~/.bashImg ]; then
@@ -13,17 +14,18 @@ else
 	echo '~/.bachImgが見つかりません'
 fi
 
+myosname=$(. ~/.bashOsCheck)
+
 # エイリアスの設定
 if [ -f ~/.bashAliases.bash ]; then
 	. ~/.bashAliases.bash
 else
 	echo '~/.bachAliasesが見つかりません'
 fi
-
-myosname=$(. ~/.bashOsCheck)
+echo 'now workig..'
 
 # Linuxでのみ必要なスクリプト
-if [ $myosname == 'Linux' ]; then
+if [ $myosname = 'Linux' ]; then
 	echo 'I am linux machine!'
 	if [ -f ~/.bashLinux.bash ]; then
 		. ~/.bashLinux.bash
@@ -31,7 +33,7 @@ if [ $myosname == 'Linux' ]; then
 fi
 
 # Macでのみ必要なスクリプト
-if [ $myosname == 'Mac' ]; then
+if [ $myosname = 'Mac' ]; then
 	if [ -f ~/.bashMac.bash ]; then
 		. ~/.bashMac.bash
 	fi
@@ -39,7 +41,7 @@ if [ $myosname == 'Mac' ]; then
 	echo 'this is mac'
 	alias jenv_java_home='echo "$HOME/.jenv/versions/`jenv version-name`"'
 fi
-
+echo 'now workig....'
 # Windowsでのみ必要なスクリプト
 if [ $myosname = 'Win' ]; then
 	echo 'i am winpc!'
