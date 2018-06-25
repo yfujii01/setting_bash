@@ -119,6 +119,7 @@ rr() {
 	local now=$(pwd)
 	cd $(ghq root)/github.com/yfujii01/setting_bash
 	. deploy.sh
+	cd $now
 	exec $SHELL -l
 }
 
