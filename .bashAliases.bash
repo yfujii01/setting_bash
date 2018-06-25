@@ -18,7 +18,7 @@ alias gf='git fetch'
 alias gs='git status --short'
 alias ga='gadd'
 alias gp='git push origin HEAD'
-alias gd='git diff --name-only '
+alias gd='git diff'
 alias gdw='git difftool -y -d -t default-difftool'
 alias gdm='git difftool -t meld -d'
 alias gdv='git difftool -t vimdiff'
@@ -70,7 +70,7 @@ function fnc_gcd() {
 
 echo 'fzf setting!'
 # 対話モード
-alias FILTER='fzf --reverse --border --inline-info'
+alias FILTER='fzf --reverse --border --inline-info --select-1 --exit-0'
 if [ $myosname = 'Win' ]; then
 	# windows版では--heightがサポートされていない。。。
 	echo 'fzf setting win'
