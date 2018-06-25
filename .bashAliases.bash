@@ -70,13 +70,14 @@ function fnc_gcd() {
 
 echo 'fzf setting!'
 # 対話モード
+alias FILTER='fzf --reverse --border --inline-info'
 if [ $myosname = 'Win' ]; then
 	# windows版では--heightがサポートされていない。。。
 	echo 'fzf setting win'
-	alias FILTER_S='fzf --cycle --reverse --border --inline-info'
+	alias FILTER_S='FILTER'
 else
 	echo 'fzf setting nowin'
-	alias FILTER_S='fzf --cycle --reverse --border --inline-info --height 80%'
+	alias FILTER_S='FILTER --height 80%'
 fi
 alias FILTER_M='FILTER_S -m'
 alias FILTER_S_REVERSE='FILTER_S --tac'
