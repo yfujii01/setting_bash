@@ -58,6 +58,13 @@ alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
 alias dockerrm="dockerps|xargs docker stop&&dockerps|xargs docker rm"
 alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerimages|xargs docker rmi"
 
+dockerls(){
+	local aa=$(docker ps -a|FILTER_M)
+	echo $aa
+	local bb=$(echo $aa|sed -E 's/ .+//g')
+	echo $bb
+}
+
 alias ee='exec $SHELL -l'
 
 # localのgitリポジトリに移動
