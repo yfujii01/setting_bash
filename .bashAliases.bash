@@ -12,8 +12,7 @@ alias e='emacs'
 #git関連
 alias gf='git fetch'
 alias gs='git status --short'
-alias ga='git add .'
-alias gc='git commit'
+alias ga='gadd'
 alias gp='git push origin HEAD'
 alias gd='git diff --name-only '
 alias gdw='git difftool -y -d -t default-difftool'
@@ -22,20 +21,19 @@ alias gdv='git difftool -t vimdiff'
 alias gk='gitk --all --date-order'                                 # --simplify-by-decoration をつけると個別のコミットが隠れる
 alias gl='git log --oneline --graph --decorate --all --date-order' # --simplify-by-decoration をつけると個別のコミットが隠れる
 alias gconf='git config -l'
-#gitコンボ
-alias gsd='echo "------ git status ------";gs;echo "------ git diff --name-only ------";gd'
-# alias gac='git add .;git commit'
-# alias gacp='git add .;git commit;git push origin HEAD'
 
-# git addしてcommitする。パラメータがあればコミットメッセージとして扱う
-function gac() {
-	git add .
+function gc() {
 	local mes=$1
 	if [ -z $mes ]; then
 		git commit
 	else
 		git commit -m $mes
 	fi
+}
+# git addしてcommitする。パラメータがあればコミットメッセージとして扱う
+function gac() {
+	gadd
+	gc $1
 }
 
 # git addしてcommitしてpushする。パラメータがあればコミットメッセージとして扱う
@@ -65,21 +63,16 @@ function fnc_gcd() {
 	cd $(ghq root)/$val
 }
 
-# githubのリポジトリに移動
-alias ghcd1='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-#alias ghcd='ghq list | peco | cut -d "/" -f 2,3 | xargs hub browse'
-#alias ghcd='ghls | peco | cut -d "/" -f 2,3 | xargs hub browse'
-alias ghcd='ghls2 | peco | cut -d "/" -f 2,3 | xargs hub browse'
-
-# githubのリポジトリ一覧
-#alias ghls='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4'
-#alias ghls2='curl -s "https://api.github.com/users/yfujii01/repos?per_page=100"|grep \"name\"|cut -d'\''"'\'' -f4 | sed -e s#^#github.com/yfujii01/#g'
-
 # 対話モード
-alias FILTER_M='fzf --cycle --height 80% --reverse --border --inline-info -m'
-alias FILTER_S='fzf --cycle --height 80% --reverse --border --inline-info'
-alias FILTER_M_REVERSE='FILTER_M --tac'
+if [ $myosname = 'Win' ]; then
+ 	# windows版では--heightがサポートされていない。。。
+	alias FILTER_S='fzf --cycle --reverse --border --inline-info'
+else
+	alias FILTER_S='fzf --cycle --reverse --border --inline-info --height 80%'
+fi
+alias FILTER_M='FILTER_S -m'
 alias FILTER_S_REVERSE='FILTER_S --tac'
+alias FILTER_M_REVERSE='FILTER_M --tac'
 
 # githubから対話形式でcloneする
 alias ghget='fnc_ghget'
@@ -91,7 +84,8 @@ function fnc_ghget() {
 	local val=$(echo $cc | FILTER_M)
 	[ -z $val ] && return
 	echo $val | while read line; do
-		ghq get -p $line
+		echo 'ghq get -p '$line
+		ghq get -p yfujii01/$line
 	done
 }
 
@@ -113,13 +107,10 @@ function fnc_gadd() {
 
 # .bashrc展開
 rr() {
-	echo 'aaaa'
 	local now=$(pwd)
-	echo $now
 	cd $(ghq root)/github.com/yfujii01/setting_bash
 	. deploy.sh
-	cd $now
-	exec $SHELL -l
+	# exec $SHELL -l
 }
 
 # historyを対話形式で

@@ -41,7 +41,8 @@ if [ $myosname == 'Mac' ]; then
 fi
 
 # Windowsでのみ必要なスクリプト
-if [ $myosname == 'Win' ]; then
+if [ $myosname = 'Win' ]; then
+	echo 'i am winpc!'
 	if [ -f ~/.bashWindows.bash ]; then
 		. ~/.bashWindows.bash
 	fi
