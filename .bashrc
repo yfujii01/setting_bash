@@ -39,28 +39,6 @@ if [ $myosname = 'Win' ]; then
 
 fi
 
-# GOPATH追加
-if [ -e ~/go ]; then
-	export GOPATH="~/go"
-	export PATH="$PATH:$GOPATH/bin"
-fi
-
-# fzfパス追加
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-
-# anyenvパス追加
-if [ -e $HOME/.anyenv/bin ]; then
-	export PATH="$HOME/.anyenv/bin:$PATH"
-	eval "$(anyenv init -)"
-fi
-
-# docker起動
-if [ 'RH1027' = $(echo $HOSTNAME) ]; then
-	echo 'I am RH1027'
-	export DOCKER_HOST='tcp://0.0.0.0:2375'
-fi
-
 # 起動時imageの読み込み
 if [ -f ~/.bashImg ]; then
 	COMMENT=【$(date "+%Y-%m-%d (%a)")】
