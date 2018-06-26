@@ -47,7 +47,7 @@ esac
 # enable color support of ls and also add handy aliases
 # lsのカラーサポートを有効にし、便利なエイリアスを追加する
 if [ -x /usr/bin/dircolors ]; then
-	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	test -r $HOME/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
 fi
 
 # enable programmable completion features (you don't need to enable

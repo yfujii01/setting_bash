@@ -190,7 +190,7 @@ function sshlist() {
         }
       }
     }
-  ' ~/.ssh/config
+  ' $HOME/.ssh/config
 }
 
 # .ssh/configの内容から選択してsshする

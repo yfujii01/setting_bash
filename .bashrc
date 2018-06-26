@@ -2,28 +2,28 @@
 [ -z "$PS1" ] && return
 echo 'work start!!'
 
-myosname=$(. ~/.bashOsCheck)
+myosname=$(. $HOME/.bashOsCheck.bash)
 
 # エイリアスの設定
-if [ -f ~/.bashAliases.bash ]; then
-	. ~/.bashAliases.bash
+if [ -f $HOME/.bashAliases.bash ]; then
+	. $HOME/.bashAliases.bash
 else
-	echo '~/.bachAliasesが見つかりません'
+	echo "$HOME/.bachAliasesが見つかりません"
 fi
 echo 'now workig..'
 
 # Linuxでのみ必要なスクリプト
 if [ $myosname = 'Linux' ]; then
 	echo 'I am linux machine!'
-	if [ -f ~/.bashLinux.bash ]; then
-		. ~/.bashLinux.bash
+	if [ -f $HOME/.bashLinux.bash ]; then
+		. $HOME/.bashLinux.bash
 	fi
 fi
 
 # Macでのみ必要なスクリプト
 if [ $myosname = 'Mac' ]; then
-	if [ -f ~/.bashMac.bash ]; then
-		. ~/.bashMac.bash
+	if [ -f $HOME/.bashMac.bash ]; then
+		. $HOME/.bashMac.bash
 	fi
 
 	echo 'this is mac'
@@ -33,36 +33,16 @@ echo 'now workig....'
 # Windowsでのみ必要なスクリプト
 if [ $myosname = 'Win' ]; then
 	echo 'i am winpc!'
-	if [ -f ~/.bashWindows.bash ]; then
-		. ~/.bashWindows.bash
+	if [ -f $HOME/.bashWindows.bash ]; then
+		. $HOME/.bashWindows.bash
 	fi
 
 fi
 
-echo "@0@$PATH"
-export PATH=/bin:/usr/bin:/usr/local/bin
-echo "@1@$PATH"
-
-# GOPATH追加
-if [ -e $HOME/go ]; then
-	export GOPATH="$HOME/go"
-	export PATH="$PATH:$GOPATH/bin"
+# PATHの設定
+if [ -f $HOME/.bashPathInit.bash ]; then
+	. $HOME/.bashPathInit.bash
 fi
-
-echo "@2@$PATH"
-
-# fzfパス追加
-[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
-
-echo "@3@$PATH"
-
-# anyenvパス追加
-if [ -e $HOME/.anyenv/bin ]; then
-	export PATH="$PATH:$HOME/.anyenv/bin"
-	eval "$(anyenv init -)"
-fi
-
-echo "@4@$PATH"
 
 # docker起動
 if [ 'RH1027' = $(echo $HOSTNAME) ]; then
@@ -71,14 +51,13 @@ if [ 'RH1027' = $(echo $HOSTNAME) ]; then
 fi
 
 # 起動時imageの読み込み
-if [ -f ~/.bashImg ]; then
+if [ -f $HOME/.bashImg ]; then
 	COMMENT=【$(date "+%Y-%m-%d (%a)")】
 	IFS=">"
-	AA=($(sed -e "s/__DATE__/$COMMENT/g" ~/.bashImg))
+	AA=($(sed -e "s/__DATE__/$COMMENT/g" $HOME/.bashImg))
 	NUM=${#AA[*]}
 	NO=$(expr $RANDOM % $NUM)
 	echo ${AA[$NO]}
 else
-	echo '~/.bachImgが見つかりません'
+	echo "$HOME/.bachImgが見つかりません"
 fi
-
