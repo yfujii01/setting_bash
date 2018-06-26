@@ -50,6 +50,31 @@ function gacp() {
 # 全てのリモートブランチをローカルに作成する
 alias gba='for remote in `git branch -r`; do if [ $remote != "origin/HEAD" ] && [ $remote != "->" ]; then git branch --track ${remote#origin/} $remote; fi done'
 
+# git branchをインタラクティブに操作する
+alias gitbranch='fnc_gitbranch'
+alias gb='fnc_gitbranch'
+fnc_gitbranch() {
+	local aa=$(git branch -a | FILTER_M)
+	[ "$aa" = "" ] && return
+	echo $aa | while read line; do
+		local bb=$(echo $line | sed -E 's_^..__g')
+		local cc=$(echo $bb | sed -E 's_^remotes/__g')
+		local name=$(echo $cc | sed -E 's_ .+__g')
+		echo 'name = "'$name'"'
+		if [ "$1" != "" ]; then
+			if [ $(echo "$@" | grep '@') ]; then
+				# 引数に@が存在する場合$nameで置き換える
+				local com="git "$(echo $@ | sed -E s/@/$name/g)
+			else
+				# 引数に@が存在しない場合$nameを後ろにつける
+				local com="git $@ $name"
+			fi
+			echo "$com"
+			eval $com
+		fi
+	done
+}
+
 # クリップボードへコピー(動かない)
 alias pbcopy='xsel --clipboard --input'
 
