@@ -53,16 +53,42 @@ alias gba='for remote in `git branch -r`; do if [ $remote != "origin/HEAD" ] && 
 # クリップボードへコピー(動かない)
 alias pbcopy='xsel --clipboard --input'
 
-alias dockerps="docker ps -a | awk '{print \$1}' | tail -n +2"
+# alias dockerps="docker ps -a | awk '{print \$1}' | tail -n +2"
 alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
 alias dockerrm="dockerps|xargs docker stop&&dockerps|xargs docker rm"
 alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerimages|xargs docker rmi"
 
-dockerls(){
-	local aa=$(docker ps -a|FILTER_M)
-	echo $aa
-	local bb=$(echo $aa|sed -E 's/ .+//g')
-	echo $bb
+alias dockerps='fnc_dockerps'
+fnc_dockerps() {
+	if [ "$1" == "--help" ]; then
+		cat <<EOS
+引数を渡すことができます
+(例)
+dockerps start @
+dockerps stop @
+dockerps rm @
+* @は選択したcontainerのnameに置き換えて実行されます
+EOS
+		return
+	fi
+	local aa=$(docker ps -a | FILTER_M --header-lines=1)
+	[ "$aa" = "" ] && return
+	echo $aa | while read line; do
+		local id=$(echo $line | sed -E 's/ .+//g')
+		local name=$(echo $line | sed -E 's/.+ //g')
+		echo 'name = '$name', id = '$id
+		if [ "$1" != "" ]; then
+			if [ $(echo "$@" | grep '@') ]; then
+				# 引数に@が存在する場合$nameで置き換える
+				local com="docker "$(echo $@ | sed -E s/@/$name/g)
+			else
+				# 引数に@が存在しない場合$nameを後ろにつける
+				local com="docker $@ $name"
+			fi
+			echo "$com"
+			eval $com
+		fi
+	done
 }
 
 alias ee='exec $SHELL -l'
