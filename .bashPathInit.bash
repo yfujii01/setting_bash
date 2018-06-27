@@ -25,5 +25,10 @@ if [ -e $HOME/.anyenv/bin ]; then
 	eval "$(anyenv init -)"
 fi
 
+# windowsパス追加
+if [ "$ORIGINAL_PATH" != "" ]; then
+    export PATH="$PATH:$ORIGINAL_PATH"	
+fi
+
 echo "@4@$PATH"
 echo "end   .bashPathInit"
