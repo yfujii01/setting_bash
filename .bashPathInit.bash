@@ -3,7 +3,10 @@
 echo "start .bashPathInit"
 
 echo "@0@$PATH"
-export PATH=/bin:/usr/bin:/usr/local/bin
+# windowsの場合は使用するコンソールによって(？)windowsのパスが引き継がれたり引き継がれなかったりする
+if [ ! $myosname = 'Win' ]; then
+	export PATH=/bin:/usr/bin:/usr/local/bin
+fi
 echo "@1@$PATH"
 
 # GOPATH追加
@@ -23,11 +26,6 @@ echo "@3@$PATH"
 if [ -e $HOME/.anyenv/bin ]; then
 	export PATH="$PATH:$HOME/.anyenv/bin"
 	eval "$(anyenv init -)"
-fi
-
-# windowsパス追加
-if [ "$ORIGINAL_PATH" != "" ]; then
-    export PATH="$PATH:$ORIGINAL_PATH"	
 fi
 
 echo "@4@$PATH"
