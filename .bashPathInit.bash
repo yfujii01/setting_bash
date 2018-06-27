@@ -6,6 +6,7 @@ echo "@0@$PATH"
 # windowsの場合は使用するコンソールによって(？)windowsのパスが引き継がれたり引き継がれなかったりする
 if [ ! $myosname = 'Win' ]; then
 	export PATH=/bin:/usr/bin:/usr/local/bin
+	export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
 fi
 echo "@1@$PATH"
 
