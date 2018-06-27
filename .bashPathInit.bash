@@ -7,6 +7,7 @@ echo "@0@$PATH"
 if [ ! $myosname = 'Win' ]; then
 	export PATH=/bin:/usr/bin:/usr/local/bin
 	export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"
+	export PATH="$PATH:/snap/bin"
 fi
 echo "@1@$PATH"
 
@@ -19,7 +20,9 @@ fi
 echo "@2@$PATH"
 
 # fzfパス追加
-[ -f $HOME/.fzf.bash ] && source $HOME/.fzf.bash
+if [ -f $HOME/.fzf.bash ]; then
+	source $HOME/.fzf.bash
+fi
 
 echo "@3@$PATH"
 
