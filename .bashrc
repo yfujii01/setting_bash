@@ -50,6 +50,8 @@ if [ 'RH1027' = $(echo $HOSTNAME) ]; then
 	export DOCKER_HOST='tcp://0.0.0.0:2375'
 fi
 
+echo "TERM=$TERM"
+
 # 起動時imageの読み込み
 if [ -f $HOME/.bashImg ]; then
 	COMMENT=【$(date "+%Y-%m-%d (%a)")】
