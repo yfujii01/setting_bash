@@ -178,9 +178,9 @@ alias ghget='fnc_ghget'
 function fnc_ghget() {
 	echo 'githubからcloneします。複数選択可能(TAB)'
 	local aa=$(curl -s "https://api.github.com/users/yfujii01/repos?per_page=100")
-	local bb=$(echo $aa | grep \"name\")
-	local cc=$(echo $bb | cut -d'"' -f4)
-	local val=$(echo $cc | FILTER_M)
+	local bb=$(echo "$aa" | grep \"name\")
+	local cc=$(echo "$bb" | cut -d'"' -f4)
+	local val=$(echo "$cc" | FILTER_M)
 	[ -z $val ] && return
 	echo $val | while read line; do
 		echo 'ghq get -p '$line
