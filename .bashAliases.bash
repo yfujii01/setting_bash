@@ -131,6 +131,7 @@ EOS
 	[ "$aa" = "" ] && return
 	echo $aa | while read line; do
 		local id=$(echo $line | awk '{print $3}')
+		echo "$line"
 		echo 'id = '$id
 		if [ "$1" != "" ]; then
 			if [ $(echo "$@" | grep '@') ]; then
