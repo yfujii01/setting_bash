@@ -79,7 +79,7 @@ fnc_gitbranch() {
 alias pbcopy='xsel --clipboard --input'
 
 # alias dockerps="docker ps -a | awk '{print \$1}' | tail -n +2"
-alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
+# alias dockerimages="docker images | awk '{print \$3}' | tail -n +2"
 alias dockerrm="dockerps|xargs docker stop&&dockerps|xargs docker rm"
 alias dockerrmi="dockerps|xargs docker stop&&dockerps|xargs docker rm&&dockerimages|xargs docker rmi"
 
@@ -109,6 +109,36 @@ EOS
 			else
 				# 引数に@が存在しない場合$nameを後ろにつける
 				local com="docker $@ $name"
+			fi
+			echo "$com"
+			eval $com
+		fi
+	done
+}
+
+alias dockerimages='fnc_dockerimages'
+fnc_dockerimages() {
+	if [ "$1" == "--help" ]; then
+		cat <<EOS
+引数を渡すことができます
+(例)
+dockerps rmi @
+* @は選択したcontainerのnameに置き換えて実行されます
+EOS
+		return
+	fi
+	local aa=$(docker images | FILTER_M --header-lines=1)
+	[ "$aa" = "" ] && return
+	echo $aa | while read line; do
+		local id=$(echo $line | awk '{print $3}')
+		echo 'id = '$id
+		if [ "$1" != "" ]; then
+			if [ $(echo "$@" | grep '@') ]; then
+				# 引数に@が存在する場合$nameで置き換える
+				local com="docker "$(echo $@ | sed -E s/@/$id/g)
+			else
+				# 引数に@が存在しない場合$nameを後ろにつける
+				local com="docker $@ $id"
 			fi
 			echo "$com"
 			eval $com
