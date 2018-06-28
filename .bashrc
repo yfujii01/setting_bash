@@ -63,3 +63,4 @@ if [ -f $HOME/.bashImg ]; then
 else
 	echo "$HOME/.bachImgが見つかりません"
 fi
+
