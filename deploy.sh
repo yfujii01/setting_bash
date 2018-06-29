@@ -12,7 +12,7 @@ function create_link() {
 		echo 'mkdir -p '${dir}
 	fi
 
-	ln -f ${file} ${dir}/${file}
+	ln -sf `pwd`/${file} ${dir}/
 	echo 'link create '${dir}'/'${file}
 }
 
